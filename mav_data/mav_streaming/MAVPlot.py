@@ -1,5 +1,5 @@
 # Author: XU Tianyu & WANG Xiaoke
-# Edit: 2021.3.10
+# Edit: 2021.3.11
 # FM_Final Project: EMG_MAV
 
 # Implement the calculation of MAV (mean absolute value) for all eight channels of the EMG.
@@ -14,6 +14,7 @@ import math
 from myo_ecn.listeners                   import ConnectionChecker
 from myo_ecn.listeners                   import Buffer
 from MultichannelPlot                    import MultichannelPlot
+from MAVMultichannelPlot                 import MAVMultichannelPlot             # plot together with 16 channels 
 #from MultichannelPlot1                  import MultichannelPlot1
 #from features                           import MAV
 
@@ -42,7 +43,8 @@ def main():
 
     # Setup multichannel plotter for visualisation:
     plotter = MultichannelPlot(nchan = 8, xlen = 512) # Number of EMG channels in MYO armband is 8
-    #plotter1 = MultichannelPlot1(nchan = 8, xlen = 512)
+    #plotter1 = MAVMultichannelPlot(nchan = 16, xlen = 512)
+  
 
     mav_data = np.array([])
     mav_data_final = np.zeros(1*8)
@@ -61,9 +63,9 @@ def main():
 
             #data.append(emg_data)
             #data = np.array(data)
-            
+
             if (emg_data.shape[0]>=512):
-                mav_data = MAV(emg_data)  # 8*1
+                mav_data = MAV(emg_data)            # 8*1
                 mav_data = mav_data[np.newaxis, :]  #1*8
 
                 #mav_data = np.array(mav_data)
@@ -78,11 +80,22 @@ def main():
                 #data = np.delete(data,0, 0)
 
 
-            # Plot it
+            # Plot emg—_data
             #plotter.update_plot(emg_data.T)
+            
+            
+            # Plot mav_data
             if (mav_data_final.T.ndim==2):
                 plotter.update_plot(np.array(mav_data_final.T))
-            
+                
+                
+            # Plot together 
+            #if (mav_data_final.T.ndim==2 & emg_data.shape[0]>1):                
+                # mav_data_final_fill = np.pad(mav_data_final,((0,len(emg_data)-len(mav_data_final)),(0,0)),'constant')  # Complete 0
+                # mav=np.r_[mav_data_final_fill.T,emg_data.T]
+                # plotter1.update_plot(mav)                                                      # mav emg&mav combined
+                
+              
             if keyboard.is_pressed('C'):
                 print('Stop.')
                 break
