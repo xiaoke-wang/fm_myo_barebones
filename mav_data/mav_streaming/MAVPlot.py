@@ -14,7 +14,8 @@ import math
 from myo_ecn.listeners                   import ConnectionChecker
 from myo_ecn.listeners                   import Buffer
 from MultichannelPlot                    import MultichannelPlot
-from MAVMultichannelPlot                 import MAVMultichannelPlot             # plot together with 16 channels 
+from myo_ecn.listenersPlus               import BufferPlus
+#from MAVMultichannelPlot                import MAVMulticChannelPlot             # plot together with 16 channels 
 #from MultichannelPlot1                  import MultichannelPlot1
 #from features                           import MAV
 
@@ -40,7 +41,7 @@ def main():
     # Setup our custom processor of MYO's events.
     # EmgBuffer will acquire new data in a buffer (queue):
     listener = Buffer(buffer_len = 512) # At sampling rate of 200Hz, 512 samples correspond to ~2.5 seconds of the most recent data.
-
+    computer = BufferPlus(buffer_len = 15)
     # Setup multichannel plotter for visualisation:
     plotter = MultichannelPlot(nchan = 8, xlen = 512) # Number of EMG channels in MYO armband is 8
     #plotter1 = MAVMultichannelPlot(nchan = 16, xlen = 512)
@@ -59,21 +60,23 @@ def main():
             emg_data = listener.get_emg_data()
             # Transform it to numpy matrix
             emg_data = np.array([x[1] for x in emg_data])
-
-
+            mav_data = computer.get_mav_data(emg_data)
+            mav_data = np.array(mav_data)
             #data.append(emg_data)
             #data = np.array(data)
 
-            if (emg_data.shape[0]>=512):
-                mav_data = MAV(emg_data)            # 8*1
-                mav_data = mav_data[np.newaxis, :]  #1*8
+            # if (emg_data.shape[0]>=512):
+                # mav_data = MAV(emg_data)             # 8*1
+                # mav_data = mav_data[np.newaxis, :]   #1*8
+                
+            
 
                 #mav_data = np.array(mav_data)
                 #mav_data_final = np.array(mav_data_final)
-                if (mav_data_final.shape[0]>=512):
-                    mav_data_final = np.delete(mav_data_final,0,0)
+                # if (mav_data_final.shape[0]>=512):
+                    # mav_data_final = np.delete(mav_data_final,0,0)
 
-                mav_data_final=np.r_[mav_data_final,mav_data]
+                # mav_data_final=np.r_[mav_data_final,mav_data]
 
 
                 #mav_data_final = mav_data_final.T
@@ -85,8 +88,9 @@ def main():
             
             
             # Plot mav_data
-            if (mav_data_final.T.ndim==2):
-                plotter.update_plot(np.array(mav_data_final.T))
+            #if (mav_data_final.T.ndim==2):
+                
+            plotter.update_plot(np.array(mav_data.T))
                 
                 
             # Plot together 
