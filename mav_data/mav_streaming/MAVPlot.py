@@ -1,5 +1,5 @@
 # Author: XU Tianyu & WANG Xiaoke
-# Edit: 2021.3.11
+# Edit: 2021.3.14
 # FM_Final Project: EMG_MAV
 
 # Implement the calculation of MAV (mean absolute value) for all eight channels of the EMG.
