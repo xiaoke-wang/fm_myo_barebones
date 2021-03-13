@@ -19,15 +19,15 @@ from myo_ecn.listenersPlus               import BufferPlus
 #from MultichannelPlot1                  import MultichannelPlot1
 #from features                           import MAV
 
-def MAV(in_data):
-    mav_data = []  # 1x8
-    for i in range(0,8):
-        col_data = in_data[:,i]
-        abs_data = np.absolute(col_data)
-        mav_datai = sum(abs_data)/len(abs_data)
-        mav_data.append(mav_datai)
-    mav_data = np.array(mav_data)
-    return mav_data
+# def MAV(in_data):
+    # mav_data = []  # 1x8
+    # for i in range(0,8):
+        # col_data = in_data[:,i]
+        # abs_data = np.absolute(col_data)
+        # mav_datai = sum(abs_data)/len(abs_data)
+        # mav_data.append(mav_datai)
+    # mav_data = np.array(mav_data)
+    # return mav_data
 
 
 def main():
