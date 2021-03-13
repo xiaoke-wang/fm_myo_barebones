@@ -4,7 +4,7 @@ from matplotlib import pyplot as plt
 
 class MultichannelPlot(object):
     # Plots multidimensional signals in a real-time fashion
-    def __init__(self, nchan=8, xlen=15):
+    def __init__(self, nchan=8, xlen=512):
         self.nchan = nchan
         self.xlen = xlen
         self.fig = plt.figure(figsize=(10,8))

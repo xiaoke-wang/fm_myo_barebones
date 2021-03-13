@@ -32,9 +32,9 @@ def main():
     # Setup our custom processor of MYO's events.
     # EmgBuffer will acquire new data in a buffer (queue):
     listener = Buffer(buffer_len = 512) # At sampling rate of 200Hz, 512 samples correspond to ~2.5 seconds of the most recent data.
-    computer = BufferPlus(buffer_len = 15)
+    computer = BufferPlus(buffer_len = 512)
     # Setup multichannel plotter for visualisation:
-    plotter = MultichannelPlot(nchan = 8, xlen = 15) # Number of EMG channels in MYO armband is 8 , window size is 15 for MAV
+    plotter = MultichannelPlot(nchan = 8, xlen = 512) # Number of EMG channels in MYO armband is 8 , window size is 15 for MAV
   
 
     # Tell MYO API to start a parallel thread that will collect the data and
@@ -50,13 +50,13 @@ def main():
 
             # avoid len() report erro
             if (emg_data.ndim==2):
-                mav_data = computer.get_mav_data(emg_data)
-                mav_data = np.array(mav_data)
-           
-                # update data
-                plotter.update_plot(np.array(mav_data.T))
+                if (emg_data.shape[0]==512):
+                    mav_data = computer.get_mav_data(emg_data)
+                    mav_data = np.array(mav_data)               
+                    # update data
+                    plotter.update_plot(np.array(mav_data.T))
                 
-              
+            
             if keyboard.is_pressed('C'):
                 print('Stop.')
                 break
