@@ -13,8 +13,9 @@ class BufferPlus(myo.DeviceListener):
         self.lock = Lock()
         self.mav_data_queue = deque(maxlen=self.n)
 
+
     def get_mav_data(self,in_data):
-        mav_data = []
+        mav_data = {}
         num_splitarray = np.linspace(0,496,64,dtype=int) #(step = 8, num = 64)
         with self.lock:
             # compute the MAV data
@@ -22,10 +23,11 @@ class BufferPlus(myo.DeviceListener):
                 for i in range(0,8):
                     col_data = in_data[j:(j+16),i]
                     abs_data = np.absolute(col_data)
-                    mav_datai = sum(abs_data)/len(abs_data)
-                    mav_data.append(mav_datai)
+                    mav_data[i] = sum(abs_data)/len(abs_data)
+                    #mav_data.append(mav_datai)      # 1*8
+                mav_data = list(mav_data)
             #add to deque
-            self.mav_data_queue.append(mav_data)
+            self.mav_data_queue.append(mav_data)    # 64*8
             #self.mav_data_queue = MAV(in_data) 
             return list(self.mav_data_queue)
     

@@ -37,7 +37,7 @@ def main():
     plotter = MultichannelPlot(nchan = 8, xlen = 512) # Number of EMG channels in MYO armband is 8 , window size is 15 for MAV
   
 
-    # Tell MYO API to start a parallel thread that will collect the data and
+    # Tell MYO API to satart a parallel thread that will collect the data and
     # command the MYO to start sending EMG data.
     with hub.run_in_background(listener): # This is the way to associate our listener with the MYO API.
         print('Streaming EMG ... Press shift-c to stop.')
