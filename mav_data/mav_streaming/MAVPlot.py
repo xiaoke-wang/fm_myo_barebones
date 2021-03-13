@@ -43,7 +43,7 @@ def main():
     listener = Buffer(buffer_len = 512) # At sampling rate of 200Hz, 512 samples correspond to ~2.5 seconds of the most recent data.
     computer = BufferPlus(buffer_len = 15)
     # Setup multichannel plotter for visualisation:
-    plotter = MultichannelPlot(nchan = 8, xlen = 512) # Number of EMG channels in MYO armband is 8
+    plotter = MultichannelPlot(nchan = 8, xlen = 15) # Number of EMG channels in MYO armband is 8
     #plotter1 = MAVMultichannelPlot(nchan = 16, xlen = 512)
   
 
@@ -60,8 +60,9 @@ def main():
             emg_data = listener.get_emg_data()
             # Transform it to numpy matrix
             emg_data = np.array([x[1] for x in emg_data])
-            mav_data = computer.get_mav_data(emg_data)
-            mav_data = np.array(mav_data)
+            if (emg_data.ndim==2):
+                mav_data = computer.get_mav_data(emg_data)
+                mav_data = np.array(mav_data)
             #data.append(emg_data)
             #data = np.array(data)
 
