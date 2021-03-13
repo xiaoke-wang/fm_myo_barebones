@@ -27,7 +27,7 @@ class BufferPlus(myo.DeviceListener):
                     #mav_data.append(mav_datai)      # 1*8
                 mav_data = list(mav_data)
             #add to deque
-            self.mav_data_queue.append(mav_data)    # 64*8
+                self.mav_data_queue.append(mav_data)    # 64*8
             #self.mav_data_queue = MAV(in_data) 
             return list(self.mav_data_queue)
     
